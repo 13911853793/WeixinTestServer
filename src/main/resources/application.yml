@@ -1,0 +1,34 @@
+server:
+  port: 80
+  tomcat:
+    uri-encoding: UTF-8
+
+
+spring:
+  application:
+    name: WeixinTestServer
+  http:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+  mvc:
+    view:
+      prefix: /WEB_INF/jsp
+      suffix: .jsp
+
+
+
+logging:
+  level:
+    org.springframework.web: info
+    com.github.binarywang.demo.wx.miniapp: debug
+    cn.binarywang.wx.miniapp: debug
+wx:
+  mp:
+    configs:
+      - appid: wx6d3fde82464eaabb
+        secret: f0cbb5481eb4d853a7433fec2904f744
+        token: good
+        aesKey: 111
+        msgDataFormat: JSON
