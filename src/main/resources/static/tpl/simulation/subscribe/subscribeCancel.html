@@ -1,0 +1,57 @@
+<script type="text/ng-template" id="subscribeCancel.html">
+    <div class="modal-header">
+        <h4 class="modal-title fn-ms">认购取消申请</h4>
+    </div>
+    <div class="modal-body clearfix">
+        <div class="col-lg-12">
+            <form role="form" class="form-horizontal" id="subscribeCancelform">
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label">认购类型：</label>
+                    <select name="isLeafCall" ng-model="subscribeCancelformData.isLeafCall"
+                            class="form-control col-lg-4"
+                            ng-change="show_isCall(subscribeCancelformData.isLeafCall)">>
+                        <option value="0" ng-selected="1">非CALL模式</option>
+                        <option value="1">CALL模式</option>
+                    </select>
+                    <label class="col-lg-2 control-label">请选择环境：</label>
+                    <select name="envType" ng-model="subscribeCancelformData.envType" class="form-control col-lg-4">
+                        <option value="0" ng-selected="1">测试环境</option>
+                        <option value="1">UAT环境</option>
+                        <option value="2">预发布环境</option>
+                        <option value="3">历史数据环境</option>
+                    </select>
+                </div>
+                <div class="form-group col-lg-12" ng-hide="is_Call">
+                    <label class="col-lg-2 control-label" ng-hide="is_Call">是否首CALL：</label>
+                    <select name="isRoot" ng-model="subscribeCancelformData.isRoot"
+                            class="form-control col-lg-4" ng-change="show_isRoot(subscribeCancelformData.isRoot)" ng-hide="is_Call">
+                        <option value="0" ng-selected="1">首Call</option>
+                        <option value="1">非首Call</option>
+                    </select>
+                    <label class="col-lg-2 control-label" ng-hide="is_Root">主认购编号：</label>
+                    <input name="rootSubscribeNo" ng-model="subscribeCancelformData.rootSubscribeNo"
+                           class="form-control col-lg-4"
+                           placeholder="请输入主认购编号" ng-hide="is_Root">
+                </div>
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label">认购申请编号：</label>
+                    <input name="applyId" ng-model="subscribeCancelformData.applyId"
+                           class="form-control col-lg-4"
+                           placeholder="请输入认购申请编号">
+                    <label class="col-lg-2 control-label">取消原因：</label>
+                    <input name="cancelReason" ng-model="subscribeCancelformData.cancelReason"
+                           class="form-control col-lg-4"
+                           placeholder="请输入取消原因">
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer" ng-init="subscribeCancel_init()">
+        <button type="button" class="btn btn-primary fn-ms" style="width:25%;" ng-click="subscribeCancel_cancel()">
+            取消
+        </button>
+        <button type="button" class="btn btn-success fn-ms" style="width:25%;" ng-click="subscribeCancel_send()">提交
+        </button>
+    </div>
+</script>

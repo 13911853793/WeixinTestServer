@@ -14,10 +14,8 @@ spring:
       enabled: true
   mvc:
     view:
-      prefix: /WEB_INF/jsp
+      prefix: /WEB-INF/jsp/
       suffix: .jsp
-
-
 
 logging:
   level:
@@ -25,7 +23,7 @@ logging:
     com.github.binarywang.demo.wx.miniapp: debug
     cn.binarywang.wx.miniapp: debug
 wx:
-  mp:
+  properties:
     configs:
       - appid: wx6d3fde82464eaabb
         secret: f0cbb5481eb4d853a7433fec2904f744

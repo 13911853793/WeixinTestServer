@@ -1,0 +1,34 @@
+<script type="text/ng-template" id="redeemCancelApply.html">
+    <div class="modal-header">
+        <h4 class="modal-title fn-ms">赎回撤销申请</h4>
+    </div>
+    <div class="modal-body clearfix">
+        <div class="col-lg-12">
+            <form role="form" class="form-horizontal" id="redeemCancelApplyform">
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label">赎回申请Id：</label>
+                    <input name="redeemApplyId" ng-model="redeemCancelApplyformData.redeemApplyId"
+                           class="form-control col-lg-4"
+                           placeholder="请输入赎回申请编号">
+
+                    <label class="col-lg-2 control-label">请选择环境：</label>
+                    <select name="envtype" ng-model="redeemCancelApplyformData.envtype"
+                            class="form-control col-lg-4">
+                        <option value="0" ng-selected="1">测试环境</option>
+                        <option value="1">UAT环境</option>
+                        <option value="2">预发布环境</option>
+                        <option value="3">历史数据环境</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer" ng-init="redeemCancleApply_init()">
+        <button type="button" class="btn btn-primary fn-ms" style="width:25%;" ng-click="redeemCancelApply_cancel()">
+            取消
+        </button>
+        <button type="button" class="btn btn-success fn-ms" style="width:25%;" ng-click="redeemCancelApply_send()">
+            提交
+        </button>
+    </div>
+</script>

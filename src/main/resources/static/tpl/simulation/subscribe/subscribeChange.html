@@ -1,0 +1,221 @@
+<script type="text/ng-template" id="subscribeChange.html">
+    <div class="modal-header">
+        <h4 class="modal-title fn-ms">认购变更申请</h4>
+    </div>
+    <div class="modal-body clearfix">
+        <div class="col-lg-12">
+            <form role="form" class="form-horizontal" id="subscribeChangeform">
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label">出资申请编号：</label>
+                    <input name="investApplyNo" ng-model="subscribeChangeformData.investApplyNo"
+                           class="form-control col-lg-4" placeholder="请输入出资申请编号">
+                    <label class="col-lg-2 control-label">变更原因：</label>
+                    <input name="changeReason" ng-model="subscribeChangeformData.changeReason"
+                           class="form-control col-lg-4"
+                           placeholder="请输入变更原因">
+                </div>
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label">变更类型：</label>
+                    <select name="changeType" ng-model="subscribeChangeformData.changeType"
+                            class="form-control col-lg-4"
+                            ng-change="show_changeType(subscribeChangeformData.changeType)">
+                        <option value="1" ng-selected="1">银行卡变更</option>
+                        <option value="2">协议变更</option>
+                        <option value="3">银行卡信息变更</option>
+                        <option value="4">银行卡号+银行卡信息变更</option>
+                    </select>
+                    <label class="col-lg-2 control-label">请选择环境：</label>
+                    <select name="envType" ng-model="subscribeChangeformData.envType" class="form-control col-lg-4">
+                        <option value="0" ng-selected="1">测试环境</option>
+                        <option value="1">UAT环境</option>
+                        <option value="2">预发布环境</option>
+                        <option value="3">历史数据环境</option>
+                    </select>
+                </div>
+
+                <div class="form-group col-lg-12" ng-hide="changeType_bankAccount">
+                    <label class="col-lg-2 control-label">变更后银行卡号：</label>
+                    <input name="bankAccount" ng-model="subscribeChangeformData.bankAccount"
+                           class="form-control col-lg-4" ng-blur="get_investBankInfo(subscribeChangeformData.investApplyNo,
+                            subscribeChangeformData.bankAccount,subscribeChangeformData.changeType,subscribeChangeformData.envType)"
+                           placeholder="请输入变更后银行卡号">
+                </div>
+
+                <div class="form-group col-lg-12" ng-hide="changeType_contractNo">
+                    <label class="col-lg-2 control-label">变更后协议编号：</label>
+                    <input name="contractNo" ng-model="subscribeChangeformData.contractNo"
+                           class="form-control col-lg-4"
+                           placeholder="请输入变更后协议编号">
+                </div>
+
+                <div ng-hide="changeType_bankinfo">
+
+                    <div class="form-group col-lg-12">
+                        <label class="col-lg-2 control-label">币种：</label>
+                        <select name="currency" ng-model="subscribeChangeformData.currency"
+                                class="form-control col-lg-4">
+                            <option value="0" ng-selected="1">人民币</option>
+                            <option value="1">外币</option>
+                        </select>
+                        <label class="col-lg-2 control-label">所属地区：</label>
+                        <select name="bankRegion" ng-model="subscribeChangeformData.bankRegion"
+                                class="form-control col-lg-4"
+                                ng-change="show_bankRegion(subscribeChangeformData.bankRegion)">
+                            <option value="0" ng-selected="1">境内</option>
+                            <option value="1">境外</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-lg-12">
+                        <label class="col-lg-2 control-label">账户名称：</label>
+                        <input name="bankAccountName" ng-model="subscribeChangeformData.bankAccountName"
+                               class="form-control col-lg-4"
+                               placeholder="请输入变更后账户名称">
+                        <label class="col-lg-2 control-label">银行编码：</label>
+                        <input name="bankCode" ng-model="subscribeChangeformData.bankCode"
+                               class="form-control col-lg-4"
+                               placeholder="请输入变更后银行编码">
+                    </div>
+
+
+                    <div class="form-group col-lg-12">
+                        <label class="col-lg-2 control-label">银行开户行：</label>
+                        <input name="bankOpenName" ng-model="subscribeChangeformData.bankOpenName"
+                               class="form-control col-lg-4"
+                               placeholder="请输入变更后银行开户行">
+                        <label class="col-lg-2 control-label">账户名英文名：</label>
+                        <input name="bankAccountNameEn" ng-model="subscribeChangeformData.bankAccountNameEn"
+                               class="form-control col-lg-4"
+                               placeholder="请输入变更后账户名英文名">
+                    </div>
+
+                    <div class="form-group col-lg-12">
+                        <label class="col-lg-2 control-label">SwiftCode：</label>
+                        <input name="bankSwiftCode" ng-model="subscribeChangeformData.bankSwiftCode"
+                               class="form-control col-lg-4"
+                               placeholder="请输入变更后SwiftCode">
+                        <label class="col-lg-2 control-label">开户行所在地：</label>
+                        <input name="bankAddress" ng-model="subscribeChangeformData.bankAddress"
+                               class="form-control col-lg-4"
+                               placeholder="请输入变更后开户行所在地">
+                    </div>
+
+                    <div class="form-group col-lg-12" ng-hide="is_IN">
+                        <label class="col-lg-2 control-label" ng-hide="is_IN">开户行银行所在省ID：</label>
+                        <input name="bankProvinceId" ng-model="subscribeChangeformData.bankProvinceId"
+                               class="form-control col-lg-4"
+                               placeholder="请输入变更后开户行银行所在省ID" ng-hide="is_IN">
+                        <label class="col-lg-2 control-label" ng-hide="is_IN">开户行银行所在市ID：</label>
+                        <input name="bankCityId" ng-model="subscribeChangeformData.bankCityId"
+                               class="form-control col-lg-4"
+                               placeholder="请输入变更后开户行银行所在市ID" ng-hide="is_IN">
+                    </div>
+
+                    <div class="form-group col-lg-12" ng-hide="is_OUT">
+                        <label class="col-lg-2 control-label" ng-hide="is_OUT">开户行国家：</label>
+                        <input name="bankCountry" ng-model="subscribeChangeformData.bankCountry"
+                               class="form-control col-lg-4"
+                               placeholder="请输入变更后开户行银行所在省ID" ng-hide="is_OUT">
+                        <label class="col-lg-2 control-label" ng-hide="is_OUT">开户行城市：</label>
+                        <input name="bankState" ng-model="subscribeChangeformData.bankState"
+                               class="form-control col-lg-4"
+                               placeholder="请输入变更后开户行银行所在市ID" ng-hide="is_OUT">
+                    </div>
+
+                </div>
+
+
+                <div ng-hide="changeType_bankAccount_info">
+
+                    <div class="form-group col-lg-12">
+                        <label class="col-lg-2 control-label">币种：</label>
+                        <select name="currency" ng-model="subscribeChangeformData.currency"
+                                class="form-control col-lg-4">
+                            <option value="0" ng-selected="1">人民币</option>
+                            <option value="1">外币</option>
+                        </select>
+                        <label class="col-lg-2 control-label">所属地区：</label>
+                        <select name="bankRegion" ng-model="subscribeChangeformData.bankRegion"
+                                class="form-control col-lg-4"
+                                ng-change="show_bankRegion(subscribeChangeformData.bankRegion)">
+                            <option value="0" ng-selected="1">境内</option>
+                            <option value="1">境外</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-lg-12">
+                        <label class="col-lg-2 control-label">变更后银行卡号：</label>
+                        <input name="bankAccount" ng-model="subscribeChangeformData.bankAccount"
+                               class="form-control col-lg-4" ng-blur="get_investBankInfo(subscribeChangeformData.investApplyNo,
+                            subscribeChangeformData.bankAccount,subscribeChangeformData.changeType,subscribeChangeformData.envType)"
+                               placeholder="请输入变更后银行卡号">
+                    </div>
+
+                    <div class="form-group col-lg-12">
+                        <label class="col-lg-2 control-label">账户名称：</label>
+                        <input name="bankAccountName" ng-model="subscribeChangeformData.bankAccountName"
+                               class="form-control col-lg-4"
+                               placeholder="请输入变更后账户名称">
+                        <label class="col-lg-2 control-label">银行编码：</label>
+                        <input name="bankCode" ng-model="subscribeChangeformData.bankCode"
+                               class="form-control col-lg-4"
+                               placeholder="请输入变更后银行编码">
+                    </div>
+
+                    <div class="form-group col-lg-12">
+                        <label class="col-lg-2 control-label">银行开户行：</label>
+                        <input name="bankOpenName" ng-model="subscribeChangeformData.bankOpenName"
+                               class="form-control col-lg-4"
+                               placeholder="请输入变更后银行开户行">
+                        <label class="col-lg-2 control-label">账户名英文名：</label>
+                        <input name="bankAccountNameEn" ng-model="subscribeChangeformData.bankAccountNameEn"
+                               class="form-control col-lg-4"
+                               placeholder="请输入变更后账户名英文名">
+                    </div>
+
+                    <div class="form-group col-lg-12">
+                        <label class="col-lg-2 control-label">SwiftCode：</label>
+                        <input name="bankSwiftCode" ng-model="subscribeChangeformData.bankSwiftCode"
+                               class="form-control col-lg-4"
+                               placeholder="请输入变更后SwiftCode">
+                        <label class="col-lg-2 control-label">开户行所在地：</label>
+                        <input name="bankAddress" ng-model="subscribeChangeformData.bankAddress"
+                               class="form-control col-lg-4"
+                               placeholder="请输入变更后开户行所在地">
+                    </div>
+
+                    <div class="form-group col-lg-12" ng-hide="is_IN">
+                        <label class="col-lg-2 control-label" ng-hide="is_IN">开户行银行所在省ID：</label>
+                        <input name="bankProvinceId" ng-model="subscribeChangeformData.bankProvinceId"
+                               class="form-control col-lg-4"
+                               placeholder="请输入变更后开户行银行所在省ID" ng-hide="is_IN">
+                        <label class="col-lg-2 control-label" ng-hide="is_IN">开户行银行所在市ID：</label>
+                        <input name="bankCityId" ng-model="subscribeChangeformData.bankCityId"
+                               class="form-control col-lg-4"
+                               placeholder="请输入变更后开户行银行所在市ID" ng-hide="is_IN">
+                    </div>
+
+                    <div class="form-group col-lg-12" ng-hide="is_OUT">
+                        <label class="col-lg-2 control-label" ng-hide="is_OUT">开户行国家：</label>
+                        <input name="bankCountry" ng-model="subscribeChangeformData.bankCountry"
+                               class="form-control col-lg-4"
+                               placeholder="请输入变更后开户行银行所在省ID" ng-hide="is_OUT">
+                        <label class="col-lg-2 control-label" ng-hide="is_OUT">开户行城市：</label>
+                        <input name="bankState" ng-model="subscribeChangeformData.bankState"
+                               class="form-control col-lg-4"
+                               placeholder="请输入变更后开户行银行所在市ID" ng-hide="is_OUT">
+                    </div>
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer" ng-init="subscribeChange_init()">
+        <button type="button" class="btn btn-primary fn-ms" style="width:25%;" ng-click="subscribeChange_cancel()">
+            取消
+        </button>
+        <button type="button" class="btn btn-success fn-ms" style="width:25%;" ng-click="subscribeChange_send()">提交
+        </button>
+    </div>
+</script>

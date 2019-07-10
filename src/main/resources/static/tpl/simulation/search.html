@@ -1,0 +1,89 @@
+<div ng-controller="searchController">
+    <div class="panel">
+        <div style=" padding-top: 10px;padding-left: 10px;">操作结果</div>
+        <div class="row wrapper">
+            <form role="form" id="searchForm">
+
+                <div class="col-sm-4 m-b-xs">
+                    <input type="text" class="input-sm form-control" style="width: 100%" placeholder="请输入报文关键字"
+                           name="keyWords"
+                           ng-model="searchFormData.keyWords">
+                </div>
+
+                <div class="col-xs-3 m-b-xs">
+                    <label>操作结果：</label>
+                    <select class="input-sm form-control w-xs inline v-middle" name="isSuccess"
+                            ng-model="searchFormData.isSuccess">
+                        <option value="" ng-selected="1">请选择</option>
+                        <option value="成功">操作成功</option>
+                        <option value="失败">操作失败</option>
+                    </select>
+                </div>
+                <div class="col-xs-3 m-b-xs">
+                    <label>操作环境：</label>
+                    <select class="input-sm form-control w-xs inline v-middle" name="envType"
+                            ng-model="searchFormData.envType">
+                        <option value="" ng-selected="1">请选择</option>
+                        <option value="0">测试环境</option>
+                        <option value="1">UAT环境</option>
+                        <option value="2">预发布环境</option>
+                        <option value="3">历史数据环境</option>
+                    </select>
+
+                </div>
+                <div class="col-xs-1 m-b-xs">
+                    <button class="btn btn-sm btn-default" type="button" ng-init="search()" ng-click="search()">查询
+                    </button>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="dataTables_wrapper table-responsive">
+            <table class="table table-bordered"
+                   style='table-layout:fixed;vertical-align: middle;text-align: center;'>
+                <thead>
+                <tr>
+                    <th style="width:7%;text-align:center;">序号</th>
+                    <th style="width:35%;text-align:center;">报文内容</th>
+                    <th style="width:17%;text-align:center;">消息队列</th>
+                    <th style="width:9%;text-align:center;">环境</th>
+                    <th style="width:17%;text-align:center;">时间</th>
+                    <th style="width:6%;text-align:center;">结果</th>
+                    <th style="text-align:center;">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="w in items" on-reander-finsh="search">
+                    <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{ w.pkid }}</td>
+                    <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{ w.message }}</td>
+                    <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{ w.siacode }}</td>
+                    <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{ w.env }}</td>
+                    <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{ w.create_time }}</td>
+                    <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{ w.result }}</td>
+                    <td><a href="javascript:;" class="btn btn-success btn-sm"
+                           ng-click="viewpage(w.pkid,w.message,w.siacode,w.env,w.create_time,w.result)">查看</a></td>
+                </tr>
+                </tbody>
+            </table>
+            <nav>
+                <ul class="pagination pagination-sm m-t-none m-b-none">
+                    <li>
+                        <a ng-click="Previous()">
+                            <span>上一页</span>
+                        </a>
+                    </li>
+                    <li ng-repeat="page in pageList" ng-class="{active: isActivePage(page)}">
+                        <a ng-click="selectPage(page)">{{ page }}</a>
+                    </li>
+                    <li>
+                        <a ng-click="Next()">
+                            <span>下一页</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+</div>

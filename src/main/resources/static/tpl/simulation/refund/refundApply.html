@@ -1,0 +1,76 @@
+<script type="text/ng-template" id="refundApply.html">
+    <div class="modal-header">
+        <h4 class="modal-title fn-ms">认购退款申请</h4>
+    </div>
+    <div class="modal-body clearfix">
+        <div class="col-lg-12">
+            <form role="form" class="form-horizontal" id="refundApplyform">
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label">认购Id：</label>
+                    <input name="investApplyId" ng-model="refundApplyformData.investApplyId" class="form-control col-lg-4"
+                           placeholder="请输入认购Id">
+
+                    <label class="col-lg-2 control-label">退款原因：</label>
+                    <select name="refundReason" ng-model="refundApplyformData.refundReason" class="form-control col-lg-4">
+                        <option value="1">主动</option>
+                        <option value="2" ng-selected="1">超募</option>
+                        <option value="3">违规</option>
+                        <option value="4">其他</option>
+                        <option value="5">冷凝期</option>
+                        <option value="6">募集失败</option>
+                        <option value="7">超额退款</option>
+                        <option value="8">认购费优惠</option>
+                    </select>
+                </div>
+
+
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label">退款方式：</label>
+                    <select name="refundWay" ng-model="refundApplyformData.refundWay" class="form-control col-lg-4"
+                            ng-change="show_refundAmt()" placeholder="请选择退款方式">
+                        <option value="1" ng-selected="1">全部退款</option>
+                        <option value="2">部分退款</option>
+                    </select>
+
+                    <label class="col-lg-2 control-label">退款类型：</label>
+                    <select name="refundType" ng-model="refundApplyformData.refundType" class="form-control col-lg-4"
+                            ng-change="show_refundAmt()" placeholder="请选择退款类型">
+                        <option value="null" selected>请选择</option>
+                        <option value="1">认购费</option>
+                        <option value="2" ng-selected="1">合同退款</option>
+                        <option value="3">余额退款</option>
+                        <!--<option value="4">认购费取消退款</option>-->
+                    </select>
+                </div>
+
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label">请选择环境：</label>
+                    <select name="envType" ng-model="refundApplyformData.envType" class="form-control col-lg-4">
+                        <option value="0" ng-selected="1">测试环境</option>
+                        <option value="1">UAT环境</option>
+                        <option value="2">预发布环境</option>
+                        <option value="3">历史数据环境</option>
+                    </select>
+                    <label class="col-lg-2 control-label" ng-hide="refundSubfeeAmt_visible">认购费退款金额：</label>
+                    <input name="refundAmt" id="refundSubfeeAmt" ng-hide="refundSubfeeAmt_visible" ng-model="refundApplyformData.refundSubfeeAmt" class="form-control col-lg-4"
+                           placeholder="部分退款，请输入退款金额">
+                    <label class="col-lg-2 control-label" ng-hide="refundContractAmt_visible">合同退款金额：</label>
+                    <input name="refundContractAmt" id="refundContractAmt" ng-hide="refundContractAmt_visible" ng-model="refundApplyformData.refundContractAmt " class="form-control col-lg-4"
+                           placeholder="部分退款，请输入退款金额">
+                    <label class="col-lg-2 control-label" ng-hide="refundAmt_visible">余额退款金额：</label>
+                    <input name="refundAmt" id="refundAmt"  ng-hide="refundAmt_visible" ng-model="refundApplyformData.refundAmt " class="form-control col-lg-4"
+                           placeholder="部分退款，请输入退款金额">
+
+                </div>
+
+
+
+
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer" ng-init="refundApply_init()">
+        <button type="button" class="btn btn-primary fn-ms" style="width:25%;" ng-click="refundApply_cancel()">取消</button>
+        <button type="submit" class="btn btn-success fn-ms" style="width:25%;" ng-click="refundApply_send()">提交</button>
+    </div>
+</script>

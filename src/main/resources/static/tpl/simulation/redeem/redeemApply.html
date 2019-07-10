@@ -1,0 +1,83 @@
+<script type="text/ng-template" id="redeemApply.html">
+    <div class="modal-header">
+        <h4 class="modal-title fn-ms">赎回申请</h4>
+    </div>
+    <div class="modal-body clearfix">
+        <div class="col-lg-12">
+            <form role="form" class="form-horizontal" id="redeemApplyform">
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label">认购Id：</label>
+                    <input name="subscribleId" ng-model="redeemApplyformData.subscribleId"
+                           class="form-control col-lg-4" type="number"
+                           placeholder="请输入认购Id">
+
+                    <label class="col-lg-2 control-label">请选择环境：</label>
+                    <select name="envtype" ng-model="redeemApplyformData.envtype" class="form-control col-lg-4">
+                        <option value="0" ng-selected="1">测试环境</option>
+                        <option value="1">UAT环境</option>
+                        <option value="2">预发布环境</option>
+                        <option value="3">历史数据环境</option>
+                    </select>
+                </div>
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label">赎回申请类型：</label>
+                    <select name="redeemApplyType"
+                            ng-change="show_byApplyType(redeemApplyformData.redeemApplyType);"
+                            ng-model="redeemApplyformData.redeemApplyType" class="form-control col-lg-4">
+                        <option value="1" ng-selected="1">正常赎回申请</option>
+                        <option value="2">紧急赎回申请</option>
+                    </select>
+
+                    <label class="col-lg-2 control-label" ng-show="redeemPlan_visible">赎回计划：</label>
+                    <input name="redeemScheduleId" ng-show="redeemPlan_visible" ng-model="redeemApplyformData.redeemScheduleId"
+                           class="form-control col-lg-4" type="number"
+                           ng-keyup="clearNoNum(redeemApplyformData,'success_amount')">
+
+                    <label class="col-lg-2 control-label" ng-hide="redeemPlan_visible">期望赎回日：</label>
+
+                    <div class="col-lg-4" ng-controller="DatepickerDemoCtrl">
+                        <input type="text" class="form-control col-lg-10" name="expectRedeemDate" ng-hide="redeemPlan_visible" ng-model="redeemApplyformData.expectRedeemDate" datepicker-popup="yyyy-MM-dd hh:mm:ss" is-open="opened"
+                               datepicker-options="dateOptions" placeholder="期望赎回日" ng-required="true" close-text="Close"/>
+                        <span class="input-group-btn col-lg-1">
+                                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                    </div>
+
+                </div>
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label">赎回类型：</label>
+                    <select name="redeemType" ng-change="show_redeemShare(redeemApplyformData.redeemType);"
+                            ng-model="redeemApplyformData.redeemType" class="form-control col-lg-4">
+                        <option value="1">全部赎回</option>
+                        <option value="2" ng-selected="1">部分赎回</option>
+                    </select>
+
+                    <label class="col-lg-2 control-label" ng-hide="redeemShare_visible">赎回金额/份额：</label>
+                    <input name="redeemShare" ng-hide="redeemShare_visible" ng-model="redeemApplyformData.redeemShare"
+                           class="form-control col-lg-4" type="number">
+                </div>
+                <div class="form-group col-lg-12">
+
+                    <label class="col-lg-2 control-label">赎回方式：</label>
+                    <select name="redeemWay" ng-change="show_redeem_way(redeemApplyformData.redeemWay);"
+                            ng-model="redeemApplyformData.redeemWay" class="form-control col-lg-4">
+                        <option value="null" ng-selected="1">请选择</option>
+                        <option value="0">金额赎回</option>
+                        <option value="1">份额赎回</option>
+                        <option value="2">本金赎回</option>
+                    </select>
+                    <label class="col-lg-2 control-label" ng-hide="totalValue_invisible">赎回总价值：</label>
+                    <input name="redeemTotalValue" ng-hide="totalValue_invisible" type="number"
+                           ng-model="redeemApplyformData.redeemTotalValue" class="form-control col-lg-4"
+                           ng-keyup="clearNoNumRedeem(redeemApplyformData,'success_amount')">
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer" ng-init="redeemApply_init()">
+        <button type="button" class="btn btn-primary fn-ms" style="width:25%;" ng-click="redeemApply_cancel()">取消
+        </button>
+        <button type="button" class="btn btn-success fn-ms" style="width:25%;" ng-click="redeemApply_send()">提交
+        </button>
+    </div>
+</script>

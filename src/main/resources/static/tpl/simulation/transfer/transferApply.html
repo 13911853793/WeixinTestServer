@@ -1,0 +1,186 @@
+<!--转受让过户申请-->
+<script type="text/ng-template" id="transferApply.html">
+    <div class="modal-header">
+        <h4 class="modal-title fn-ms">转受过户申请</h4>
+    </div>
+    <div class="modal-body clearfix">
+        <div class="col-lg-12">
+            <form role="form" class="form-horizontal" id="transferApplyform">
+                <div class="form-group col-lg-12 ">
+                    <label class="col-lg-2 control-label ">业务申请类型:</label>
+                    <select name="transferApplyType" ng-model="transferApplyformDate.transferApplyType" class="form-control col-lg-4 "
+                            ng-change="show_noTradeTransfer(transferApplyformDate.transferApplyType)">
+                        <option value="0" ng-selected="true">转受让</option>
+                        <option value="1">非交易过户</option>
+                    </select>
+                    <label class="col-lg-2 control-label" ng-hide="gh_visible">估值申请编号:</label>
+                    <input name="estimateApplyId" ng-model="transferApplyformDate.estimateApplyId" class="form-control col-lg-4"
+                           placeholder="请输入估值申请编号" type="text" ng-hide="gh_visible"/>
+                    <label class="col-lg-2 control-label" ng-show="gh_visible">主认购编号:</label>
+                    <input name="rootSubscribeNo" ng-model="transferApplyformDate.rootSubscribeNo" class="form-control col-lg-4"
+                           placeholder="请输入主认购编号" type="text" ng-show="gh_visible"/>
+                </div>
+                <div class="form-group col-lg-12" ng-show="gh_visible">
+                    <label class="col-lg-2 control-label ">未付收益是否过户:</label>
+                    <select name="isTransferTobePayAmt" ng-model="transferApplyformDate.isTransferTobePayAmt" class="form-control col-lg-4 ">
+                        <option value="" ng-selected="true">空</option>
+                        <option value="0" ng-selected="true">否</option>
+                        <option value="1">是</option>
+                    </select>
+                    <label class="col-lg-2 control-label ">过户业务类型:</label>
+                    <select name="noTradeTransferType" ng-model="transferApplyformDate.noTradeTransferType" class="form-control col-lg-4 ">
+                        <option value="0" ng-selected="true">赠与</option>
+                        <option value="1">死亡继承</option>
+                        <option value="2">国内家族信托</option>
+                        <option value="3">国外家族信托</option>
+                        <option value="4">变现宝</option>
+                        <option value="5">其他</option>
+                    </select>
+                </div>
+                <div class="form-group col-lg-12" ng-show="gh_visible">
+                    <label class="control-label col-lg-2 color-red">是否CC模式:</label>
+                    <select name="isCapitalCall" ng-model="transferApplyformDate.isCapitalCall" class="form-control col-lg-4 "
+                            ng-change="show_aboutCC(transferApplyformDate.isCapitalCall)">
+                        <option value="0" ng-selected="true">否</option>
+                        <option value="1">是</option>
+                    </select>
+                    <label class="control-label col-lg-2">过户类型:</label>
+                    <select name="transferType" ng-model="transferApplyformDate.transferType" class="form-control col-lg-4 "
+                            ng-change="show_noTradeTransferShare(transferApplyformDate.transferType)">
+                        <option value="0" ng-selected="true">全部过户</option>
+                        <option value="1">部分过户</option>
+                    </select>
+                </div>
+
+                <div class="form-group col-lg-12" ng-show="gh_visible">
+                    <label class="col-lg-2 control-label ">是否保留缴款权利：</label>
+                    <select name="isRetainCCRight" ng-model="transferApplyformDate.isRetainCCRight" class="form-control col-lg-4 "
+                            ng-disabled="cc_disable">
+                        <option value="0" >否</option>
+                        <option value="1" ng-selected="true">是</option>
+                    </select>
+                    <label class="control-label col-lg-2">过户份额/金额:</label>
+                    <input name="transferShare" ng-model="transferApplyformDate.transferShare" class="form-control col-lg-4"
+                           ng-disabled="transferShare_disable" placeholder="请输入过户份额/金额" type="number" />
+                </div>
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label ">转让人应付服务费：</label>
+                    <input name="transferorServiceFeeAmt" ng-model="transferApplyformDate.transferorServiceFeeAmt" class="form-control col-lg-4 "
+                           placeholder="请输入转让人服务费" type="number" ng-init="0"/>
+                    <label class="col-lg-2 control-label ">转让人服务费付款日期：</label>
+                    <!--<input name="transferorFeePayDate" ng-model="transferApplyformDate.transferorFeePayDate" class="form-control col-lg-4 "-->
+                           <!--placeholder="转让人服务费付款日期" size="16" type="text"-->
+                           <!--onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})"/>-->
+
+                    <div class="col-lg-4" ng-controller="DatepickerDemoCtrl">
+                        <input type="text" class="form-control col-lg-10" name="transferorFeePayDate"
+                               ng-model="transferApplyformDate.transferorFeePayDate" datepicker-popup="yyyy-MM-dd" is-open="opened"
+                               datepicker-options="dateOptions" placeholder="转让人服务费付款日期" ng-required="true" close-text="Close"/>
+                        <span class="input-group-btn col-lg-1">
+                                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                    </div>
+
+                </div>
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label ">受让人应付服务费：</label>
+                    <input name="transfereeServiceFeeAmt" ng-model="transferApplyformDate.transfereeServiceFeeAmt" class="form-control col-lg-4 "
+                           placeholder="请输入受让人服务费" type="number"/>
+                    <label class="col-lg-2 control-label ">受让人服务费付款日期：</label>
+                    <!--<input name="transfereeFeePayDate" ng-model="transferApplyformDate.transfereeFeePayDate" class="form-control col-lg-4 "-->
+                           <!--placeholder="转让人服务费付款日期" size="16" type="text"-->
+                           <!--onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})"/>-->
+                    <div class="col-lg-4" ng-controller="DatepickerDemoCtrl">
+                        <input type="text" class="form-control col-lg-10" name="transfereeFeePayDate"
+                               ng-model="transferApplyformDate.transfereeFeePayDate" datepicker-popup="yyyy-MM-dd" is-open="opened"
+                               datepicker-options="dateOptions" placeholder="受让人服务费付款日期" ng-required="true" close-text="Close"/>
+                        <span class="input-group-btn col-lg-1">
+                                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                    </div>
+
+                </div>
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label ">转让过户协议签署方式：</label>
+                    <select name="transferContractSignType" ng-model="transferApplyformDate.transferContractSignType" class="form-control col-lg-4 ">
+                        <option value="1" ng-selected="true">电子版</option>
+                        <option value="2">纸质版</option>
+                        <option value="3">电子+纸质</option>
+                    </select>
+                    <label class="col-lg-2 control-label ">转让过户协议签署日期：</label>
+                    <!--<input name="transferContractSignDate" ng-model="transferApplyformDate.transferContractSignDate" class="form-control col-lg-4 "-->
+                           <!--placeholder="转让人服务费付款日期" size="16" type="text"-->
+                           <!--onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"/>-->
+                    <div class="col-lg-4" ng-controller="DatepickerDemoCtrl">
+                        <input type="text" class="form-control col-lg-10" name="transferContractSignDate"
+                               ng-model="transferApplyformDate.transferContractSignDate" datepicker-popup="yyyy-MM-dd hh:mm:ss" is-open="opened"
+                               datepicker-options="dateOptions" placeholder="转让过户协议签署日期" ng-required="true" close-text="Close"/>
+                        <span class="input-group-btn col-lg-1">
+                                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                    </div>
+                </div>
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label ">受让人认购协议签署方式：</label>
+                    <select name="transfeeContractSignType" ng-model="transferApplyformDate.transfeeContractSignType" class="form-control col-lg-4 ">
+                        <option value="1" ng-selected="true">电子版</option>
+                        <option value="2">纸质版</option>
+                        <option value="3">电子+纸质</option>
+                    </select>
+                    <label class="col-lg-2 control-label ">认购协议签署日期：</label>
+                    <!--<input name="transfeeContractSignDate" ng-model="transferApplyformDate.transfeeContractSignDate" class="form-control col-lg-4 "-->
+                           <!--placeholder="转让人服务费付款日期" size="16" type="text"-->
+                           <!--onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"/>-->
+                    <div class="col-lg-4" ng-controller="DatepickerDemoCtrl">
+                        <input type="text" class="form-control col-lg-10" name="transfeeContractSignDate"
+                               ng-model="transferApplyformDate.transfeeContractSignDate" datepicker-popup="yyyy-MM-dd hh:mm:ss" is-open="opened"
+                               datepicker-options="dateOptions" placeholder="认购协议签署日期" ng-required="true" close-text="Close"/>
+                        <span class="input-group-btn col-lg-1">
+                                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                    </div>
+                </div>
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label ">客户类型：</label>
+                    <select name="customerMainType" ng-model="transferApplyformDate.customerMainType" class="form-control col-lg-4 ">
+                        <option value="0" ng-selected="true">个人</option>
+                        <option value="1">机构</option>
+                    </select>
+                    <label class="col-lg-2 control-label ">打款方式：</label>
+                    <select name="payType" ng-model="transferApplyformDate.payType" class="form-control col-lg-4 ">
+                        <option value="0" ng-selected="true">汇款</option>
+                        <option value="1">划扣</option>
+                        <option value="2">线上付款</option>
+                        <option value="3">内部汇款（公募转私募）</option>
+                    </select>
+                </div>
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label color-red">请选择环境：</label>
+                    <select name="envType" ng-model="transferApplyformDate.envType" class="form-control col-lg-4 ">
+                        <option value="0" ng-selected="true">测试环境</option>
+                        <option value="1">UAT环境</option>
+                        <option value="2">预发布环境</option>
+                        <option value="3">历史数据环境</option>
+                    </select>
+                    <label class="col-lg-2 control-label ">受让人到账时间：</label>
+                    <!--<input name="transfeeAccountDate" ng-model="transferApplyformDate.transfeeAccountDate" class="form-control col-lg-4 "-->
+                           <!--placeholder="受让人到账日期" size="16" type="text"-->
+                           <!--onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"/>-->
+                    <div class="col-lg-4" ng-controller="DatepickerDemoCtrl">
+                        <input type="text" class="form-control col-lg-10" name="transfeeAccountDate"
+                               ng-model="transferApplyformDate.transfeeAccountDate" datepicker-popup="yyyy-MM-dd hh:mm:ss" is-open="opened"
+                               datepicker-options="dateOptions" placeholder="受让人到账时间" ng-required="true" close-text="Close"/>
+                        <span class="input-group-btn col-lg-1">
+                                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-footer" ng-init="transferApply_init()">
+        <button type="button" class="btn btn-primary fn-ms" style="width:25%;" ng-click="transferApply_cancel()">取消</button>
+        <button type="button" id="transferApplySubmitBtn" class="btn btn-success fn-ms" style="width:25%;" ng-click="transferApply_send()">提交</button>
+    </div>
+</script>

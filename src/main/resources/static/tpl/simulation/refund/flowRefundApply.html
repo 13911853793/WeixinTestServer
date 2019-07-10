@@ -1,0 +1,88 @@
+<script type="text/ng-template" id="flowRefundApply.html">
+    <div class="modal-header">
+        <h4 class="modal-title fn-ms">流水退款申请</h4>
+    </div>
+    <div class="modal-body clearfix">
+        <div class="col-lg-12">
+            <form role="form" class="form-horizontal" id="flowRefundApplyform">
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label">募集账号：</label>
+                    <input name="raiseAccount" ng-model="flowRefundApplyformData.raiseAccount" class="form-control col-lg-4"
+                           placeholder="请输入募集账号">
+
+                    <label class="col-lg-2 control-label">打款账号：</label>
+                    <input name="frbankAccount" ng-model="flowRefundApplyformData.frbankAccount" class="form-control col-lg-4"
+                           placeholder="请输入打款账号">
+                </div>
+
+
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label">打款金额：</label>
+                    <input name="payAmt" ng-model="refundApplyformData.payAmt" class="form-control col-lg-4"
+                           placeholder="请输入打款金额">
+
+                    <label class="col-lg-2 control-label">币种：</label>
+                    <select name="currency" ng-model="flowRefundApplyformData.currency" class="form-control col-lg-4"
+                            placeholder="请选择币种">
+                        <option value="0" ng-selected="1" >CNY</option>
+                        <option value="1">USD</option>
+                        <option value="2">SGD</option>
+                        <option value="3">HKD</option>
+                        <option value="4">JPY</option>
+                        <option value="5">GBP</option>
+                        <option value="6">EUR</option>
+                        <option value="7">CHF/SFR</option>
+                        <option value="8">CAD</option>
+                        <option value="9">AUD</option>
+                    </select>
+                </div>
+
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label">客户类型：</label>
+                    <select name="frcustomerMainType" ng-model="flowRefundApplyformData.frcustomerMainType" class="form-control col-lg-4"
+                            placeholder="请选择客户类型">
+                        <option value="0" ng-selected="1" >个人</option>
+                        <option value="1">机构</option>
+                    </select>
+
+                    <label class="col-lg-2 control-label">回款方式：</label>
+                    <select name="frpaybackType" ng-model="flowRefundApplyformData.frpaybackType" class="form-control col-lg-4"
+                            placeholder="请选择回款方式">
+                        <option value="0" ng-selected="1" >回银行卡</option>
+                        <option value="1">回安享账户</option>
+                    </select>
+                </div>
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label">回款支付渠道：</label>
+                    <select name="frpaybackType" ng-model="flowRefundApplyformData.frpaybackType" class="form-control col-lg-4"
+                            placeholder="请选择回款支付渠道">
+                        <option value="0" ng-selected="1" >财付通</option>
+                        <option value="1">快付通</option>
+                    </select>
+
+                    <label class="col-lg-2 control-label">区域：</label>
+                    <select name="bankRegion" ng-model="flowRefundApplyformData.bankRegion" class="form-control col-lg-4"
+                            placeholder="请选择区域">
+                        <option value="0" ng-selected="1" >境内</option>
+                        <option value="1">境外</option>
+                    </select>
+                </div>
+
+
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label">请选择环境：</label>
+                    <select name="frenvtype" ng-model="flowRefundApplyformData.frenvtype" class="form-control col-lg-4">
+                        <option value="0" ng-selected="1">测试环境</option>
+                        <option value="1">UAT环境</option>
+                        <option value="2">预发布环境</option>
+                        <option value="3">历史数据环境</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer" ng-init="flowRefundApply_init()">
+        <button type="button" class="btn btn-primary fn-ms" style="width:25%;" ng-click="flowRefundApply_cancel()">取消</button>
+        <button type="submit" class="btn btn-success fn-ms" style="width:25%;" ng-click="flowRefundApply_send()">提交</button>
+    </div>
+</script>

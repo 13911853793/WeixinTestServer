@@ -1,0 +1,32 @@
+<div ng-controller="subscribeController">
+    <div>
+        <div style=" padding-top: 10px;padding-left: 15px;height: 38px;">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div>
+                        <button href="javascript:;" class="btn m-b-sm w-sm btn-default"
+                                ng-click="subscribeApply($event)">
+                            认购申请
+                        </button>
+                        <button href="javascript:;" class="btn m-b-sm w-sm btn-primary"
+                                ng-click="ccSubscribeApply($event)">
+                            CC认购申请
+                        </button>
+                        <button href="javascript:;" class="btn m-b-sm w-sm btn-success"
+                                ng-click="subscribeChange($event)">
+                            认购变更申请
+                        </button>
+                        <button href="javascript:;" class="btn m-b-sm w-sm btn-info" ng-click="subscribeCancel($event)">
+                            认购取消申请
+                        </button>
+                        <button href="javascript:;" class="btn m-b-sm w-sm btn-warning" ng-click="">安享账户到账通知</button>
+                        <button href="javascript:;" class="btn m-b-sm w-sm btn-danger" ng-click="">违约缴款关单申请</button>
+                        <button href="javascript:;" class="btn m-b-sm w-sm btn-dark" ng-click="arrivalFlow($event)">
+                            发送流水数据
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

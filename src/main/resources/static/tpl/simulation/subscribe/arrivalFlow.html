@@ -1,0 +1,88 @@
+<script type="text/ng-template" id="arrivalFlow.html">
+    <div class="modal-header">
+        <h4 class="modal-title fn-ms">发送流水</h4>
+    </div>
+    <div class="modal-body clearfix">
+        <div class="col-lg-12">
+            <form role="form" class="form-horizontal" id="arrivalFlowForm">
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label">请选择环境：</label>
+                    <select name="envType" ng-model="arrivalFlowFormData.envType" class="form-control col-lg-4">
+                        <option value="0" ng-selected="1">测试环境</option>
+                        <option value="1">UAT环境</option>
+                        <option value="2">预发布环境</option>
+                        <option value="3">历史数据环境</option>
+                    </select>
+                    <label class="col-lg-2 control-label">流水类型：</label>
+                    <select name="flowType" ng-model="arrivalFlowFormData.flowType" class="form-control col-lg-4" ng-change="disabledFeeType(arrivalFlowFormData.flowType)">>
+                        <option value="0" ng-selected="1">认购流水</option>
+                        <option value="1">退款流水</option>
+                        <option value="2">贴息流水</option>
+                        <option value="3">安享账户流水</option>
+                        <option value="4">支付单流水</option>
+                        <option value="5">产品费用流水</option>
+                    </select>
+                </div>
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label">流水金额是否与打款金额一致：</label>
+                    <select name="isPayAmount" ng-model="arrivalFlowFormData.isPayAmount"
+                            class="form-control col-lg-4"
+                            ng-change="showArrivalFlowFormFlowAmount()">
+                        <option value="1" ng-selected="1">是</option>
+                        <option value="0">否</option>
+                    </select>
+                    <label class="col-lg-2 control-label" ng-hide="flow_amount_visible">补充金额：</label>
+                    <input name="flowAmount" ng-model="arrivalFlowFormData.flowAmount"
+                           class="form-control col-lg-4"
+                           placeholder="请输入补充金额" ng-hide="flow_amount_visible">
+
+                </div>
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label">有费用流水：</label>
+                    <select name="isFeeAmount" ng-model="arrivalFlowFormData.isFeeAmount"
+                            class="form-control col-lg-2"
+                            ng-change="showArrivalFlowFormFeeAmount()">
+                        <option value="1" >有</option>
+                        <option value="0" ng-selected="1">无</option>
+                    </select>
+                    <select name="FeeType" ng-model="arrivalFlowFormData.feeType"
+                            class="form-control col-lg-2" ng-disabled="fee_type_disable">
+                        <option value="0" ng-selected="1">划扣手续费</option>
+                        <option value="1">银行结息</option>
+                        <option value="2">通道费</option>
+                    </select>
+                    <label class="col-lg-2 control-label" ng-hide="fee_amount_visible">费用金额：</label>
+                    <input name="feeAmount" ng-model="arrivalFlowFormData.flowAmount"
+                           class="form-control col-lg-4"
+                           placeholder="请输入补充金额" ng-hide="fee_amount_visible">
+
+                </div>
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label">资金到帐日：</label>
+                    <div class="col-lg-4" ng-controller="DatepickerDemoCtrl">
+                        <input type="text" class="form-control col-lg-10" name="flowTransTime"
+                               ng-model="arrivalFlowFormData.flowTransTime" datepicker-popup="yyyy-MM-dd hh:mm:ss" is-open="opened"
+                               datepicker-options="dateOptions" placeholder="资金到帐日" ng-required="true" close-text="Close"/>
+                        <span class="input-group-btn col-lg-1">
+                                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                    </div>
+                    <label class="col-lg-2 control-label">流水笔数：</label>
+                    <input name="flowNum" ng-model="arrivalFlowFormData.flowNum" class="form-control col-lg-4"
+                           placeholder="请输入流水笔数">
+                </div>
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label">认购编号：</label>
+                    <textarea name="flowInvestApplyNo" ng-model="arrivalFlowFormData.flowInvestApplyNo" rows="5"
+                              class="form-control col-lg-10">请输入认购申请编号,以逗号分开</textarea>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer" ng-init="arrivalFlowInit()">
+        <button type="button" class="btn btn-primary fn-ms" style="width:25%;" ng-click="arrivalFlowCancel()">取消
+        </button>
+        <button type="button" class="btn btn-success fn-ms" style="width:25%;" ng-click="arrivalFlowSend()">提交
+        </button>
+    </div>
+</script>
