@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
+import com.example.demo.config.WxMpProperties;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.bean.menu.WxMenu;
 import me.chanjar.weixin.common.bean.menu.WxMenuButton;
@@ -15,107 +17,45 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static me.chanjar.weixin.common.api.WxConsts.MenuButtonType;
 
 /**
- * @author Binary Wang(https://github.com/binarywang)
+ * @author chendi
  */
+@Slf4j
 @AllArgsConstructor
 @RestController
-@RequestMapping("/wx/menu/{appid}")
+@RequestMapping("/wx/menu")
 public class WxMenuController {
     private final WxMpService wxService;
-
+    private final WxMpProperties properties;
     /**
      * <pre>
      * 自定义菜单创建接口
-     * 详情请见：https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141013&token=&lang=zh_CN
-     * 如果要创建个性化菜单，请设置matchrule属性
-     * 详情请见：https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1455782296&token=&lang=zh_CN
      * </pre>
-     *
-     * @return 如果是个性化菜单，则返回menuid，否则返回null
-     */
-    @PostMapping("/create")
-    public String menuCreate(@PathVariable String appid, @RequestBody WxMenu menu) throws WxErrorException {
-        return this.wxService.switchoverTo(appid).getMenuService().menuCreate(menu);
-    }
-
-    @GetMapping("/create")
-    public String menuCreateSample(@PathVariable String appid) throws WxErrorException, MalformedURLException {
-        WxMenu menu = new WxMenu();
-        WxMenuButton button1 = new WxMenuButton();
-        button1.setType(MenuButtonType.CLICK);
-        button1.setName("今日歌曲");
-        button1.setKey("V1001_TODAY_MUSIC");
-
-//        WxMenuButton button2 = new WxMenuButton();
-//        button2.setType(WxConsts.BUTTON_MINIPROGRAM);
-//        button2.setName("小程序");
-//        button2.setAppId("wx286b93c14bbf93aa");
-//        button2.setPagePath("pages/lunar/index.html");
-//        button2.setUrl("http://mp.weixin.qq.com");
-
-        WxMenuButton button3 = new WxMenuButton();
-        button3.setName("菜单");
-
-        menu.getButtons().add(button1);
-//        menu.getButtons().add(button2);
-        menu.getButtons().add(button3);
-
-        WxMenuButton button31 = new WxMenuButton();
-        button31.setType(MenuButtonType.VIEW);
-        button31.setName("搜索");
-        button31.setUrl("http://www.soso.com/");
-
-        WxMenuButton button32 = new WxMenuButton();
-        button32.setType(MenuButtonType.VIEW);
-        button32.setName("视频");
-        button32.setUrl("http://v.qq.com/");
-
-        WxMenuButton button33 = new WxMenuButton();
-        button33.setType(MenuButtonType.CLICK);
-        button33.setName("赞一下我们");
-        button33.setKey("V1001_GOOD");
-
-        WxMenuButton button34 = new WxMenuButton();
-        button34.setType(MenuButtonType.VIEW);
-        button34.setName("获取用户信息");
-
-        ServletRequestAttributes servletRequestAttributes =
-            (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        if (servletRequestAttributes != null) {
-            HttpServletRequest request = servletRequestAttributes.getRequest();
-            URL requestURL = new URL(request.getRequestURL().toString());
-            String url = this.wxService.switchoverTo(appid).oauth2buildAuthorizationUrl(
-                String.format("%s://%s/wx/redirect/%s/greet", requestURL.getProtocol(), requestURL.getHost(), appid),
-                WxConsts.OAuth2Scope.SNSAPI_USERINFO, null);
-            button34.setUrl(url);
-        }
-
-        button3.getSubButtons().add(button31);
-        button3.getSubButtons().add(button32);
-        button3.getSubButtons().add(button33);
-        button3.getSubButtons().add(button34);
-
-        this.wxService.switchover(appid);
-        return this.wxService.getMenuService().menuCreate(menu);
-    }
-
-    /**
-     * <pre>
-     * 自定义菜单创建接口
-     * 详情请见： https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141013&token=&lang=zh_CN
-     * 如果要创建个性化菜单，请设置matchrule属性
-     * 详情请见：https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1455782296&token=&lang=zh_CN
-     * </pre>
-     *
      * @return 如果是个性化菜单，则返回menuid，否则返回null
      */
     @PostMapping("/createByJson")
-    public String menuCreate(@PathVariable String appid, @RequestBody String json) throws WxErrorException {
-        return this.wxService.switchoverTo(appid).getMenuService().menuCreate(json);
+    public Map<String, Object> menuCreate(@RequestBody String json){
+
+        Map<String, Object> datas = new HashMap<>(2);
+        final  WxMpProperties.MpConfig  config= this.properties.getConfigs().get(0);
+        try {
+            this.wxService.switchoverTo(config.getAppId()).getMenuService().menuCreate(json);
+            datas.put("code", "000");
+            datas.put("info", "创建成功");
+
+        } catch (Exception e) {
+            log.error("创建菜单错误-------" + e);
+            e.printStackTrace();
+            datas.put("code", "999");
+            datas.put("info", "创建失败");
+        }
+        return datas;
     }
 
     /**
@@ -125,8 +65,10 @@ public class WxMenuController {
      * </pre>
      */
     @GetMapping("/delete")
-    public void menuDelete(@PathVariable String appid) throws WxErrorException {
-        this.wxService.switchoverTo(appid).getMenuService().menuDelete();
+    public void menuDelete() throws WxErrorException {
+        Map<String, Object> datas = new HashMap<>(2);
+        final  WxMpProperties.MpConfig  config= this.properties.getConfigs().get(0);
+        this.wxService.switchoverTo(config.getAppId()).getMenuService().menuDelete();
     }
 
     /**
@@ -138,8 +80,10 @@ public class WxMenuController {
      * @param menuId 个性化菜单的menuid
      */
     @GetMapping("/delete/{menuId}")
-    public void menuDelete(@PathVariable String appid, @PathVariable String menuId) throws WxErrorException {
-        this.wxService.switchoverTo(appid).getMenuService().menuDelete(menuId);
+    public void menuDelete(@PathVariable String menuId) throws WxErrorException {
+        Map<String, Object> datas = new HashMap<>(2);
+        final  WxMpProperties.MpConfig  config= this.properties.getConfigs().get(0);
+        this.wxService.switchoverTo(config.getAppId()).getMenuService().menuDelete(menuId);
     }
 
     /**
@@ -149,8 +93,10 @@ public class WxMenuController {
      * </pre>
      */
     @GetMapping("/get")
-    public WxMpMenu menuGet(@PathVariable String appid) throws WxErrorException {
-        return this.wxService.switchoverTo(appid).getMenuService().menuGet();
+    public WxMpMenu menuGet() throws WxErrorException {
+        Map<String, Object> datas = new HashMap<>(2);
+        final  WxMpProperties.MpConfig  config= this.properties.getConfigs().get(0);
+        return this.wxService.switchoverTo(config.getAppId()).getMenuService().menuGet();
     }
 
     /**
@@ -162,8 +108,10 @@ public class WxMenuController {
      * @param userid 可以是粉丝的OpenID，也可以是粉丝的微信号。
      */
     @GetMapping("/menuTryMatch/{userid}")
-    public WxMenu menuTryMatch(@PathVariable String appid, @PathVariable String userid) throws WxErrorException {
-        return this.wxService.switchoverTo(appid).getMenuService().menuTryMatch(userid);
+    public WxMenu menuTryMatch(@PathVariable String userid) throws WxErrorException {
+        Map<String, Object> datas = new HashMap<>(2);
+        final  WxMpProperties.MpConfig  config= this.properties.getConfigs().get(0);
+        return this.wxService.switchoverTo(config.getAppId()).getMenuService().menuTryMatch(userid);
     }
 
     /**
@@ -182,7 +130,86 @@ public class WxMenuController {
      * </pre>
      */
     @GetMapping("/getSelfMenuInfo")
-    public WxMpGetSelfMenuInfoResult getSelfMenuInfo(@PathVariable String appid) throws WxErrorException {
-        return this.wxService.switchoverTo(appid).getMenuService().getSelfMenuInfo();
+    public WxMpGetSelfMenuInfoResult getSelfMenuInfo() throws WxErrorException {
+        Map<String, Object> datas = new HashMap<>(2);
+        final  WxMpProperties.MpConfig  config= this.properties.getConfigs().get(0);
+        return this.wxService.switchoverTo(config.getAppId()).getMenuService().getSelfMenuInfo();
     }
+
+
+    //    /**
+//     * <pre>
+//     * 自定义菜单创建接口
+//     * 详情请见：https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141013&token=&lang=zh_CN
+//     * 如果要创建个性化菜单，请设置matchrule属性
+//     * 详情请见：https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1455782296&token=&lang=zh_CN
+//     * </pre>
+//     *
+//     * @return 如果是个性化菜单，则返回menuid，否则返回null
+//     */
+//    @PostMapping("/create")
+//    public String menuCreate(@PathVariable String appid, @RequestBody WxMenu menu) throws WxErrorException {
+//        return this.wxService.switchoverTo(appid).getMenuService().menuCreate(menu);
+//    }
+//
+//    @GetMapping("/create")
+//    public String menuCreateSample(@PathVariable String appid) throws WxErrorException, MalformedURLException {
+//        WxMenu menu = new WxMenu();
+//        WxMenuButton button1 = new WxMenuButton();
+//        button1.setType(MenuButtonType.CLICK);
+//        button1.setName("今日歌曲");
+//        button1.setKey("V1001_TODAY_MUSIC");
+//
+////        WxMenuButton button2 = new WxMenuButton();
+////        button2.setType(WxConsts.BUTTON_MINIPROGRAM);
+////        button2.setName("小程序");
+////        button2.setAppId("wx286b93c14bbf93aa");
+////        button2.setPagePath("pages/lunar/index.html");
+////        button2.setUrl("http://mp.weixin.qq.com");
+//
+//        WxMenuButton button3 = new WxMenuButton();
+//        button3.setName("菜单");
+//
+//        menu.getButtons().add(button1);
+////        menu.getButtons().add(button2);
+//        menu.getButtons().add(button3);
+//
+//        WxMenuButton button31 = new WxMenuButton();
+//        button31.setType(MenuButtonType.VIEW);
+//        button31.setName("搜索");
+//        button31.setUrl("http://www.soso.com/");
+//
+//        WxMenuButton button32 = new WxMenuButton();
+//        button32.setType(MenuButtonType.VIEW);
+//        button32.setName("视频");
+//        button32.setUrl("http://v.qq.com/");
+//
+//        WxMenuButton button33 = new WxMenuButton();
+//        button33.setType(MenuButtonType.CLICK);
+//        button33.setName("赞一下我们");
+//        button33.setKey("V1001_GOOD");
+//
+//        WxMenuButton button34 = new WxMenuButton();
+//        button34.setType(MenuButtonType.VIEW);
+//        button34.setName("获取用户信息");
+//
+//        ServletRequestAttributes servletRequestAttributes =
+//            (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+//        if (servletRequestAttributes != null) {
+//            HttpServletRequest request = servletRequestAttributes.getRequest();
+//            URL requestURL = new URL(request.getRequestURL().toString());
+//            String url = this.wxService.switchoverTo(appid).oauth2buildAuthorizationUrl(
+//                String.format("%s://%s/wx/redirect/%s/greet", requestURL.getProtocol(), requestURL.getHost(), appid),
+//                WxConsts.OAuth2Scope.SNSAPI_USERINFO, null);
+//            button34.setUrl(url);
+//        }
+//
+//        button3.getSubButtons().add(button31);
+//        button3.getSubButtons().add(button32);
+//        button3.getSubButtons().add(button33);
+//        button3.getSubButtons().add(button34);
+//
+//        this.wxService.switchover(appid);
+//        return this.wxService.getMenuService().menuCreate(menu);
+//    }
 }

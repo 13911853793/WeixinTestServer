@@ -1,0 +1,21 @@
+<script type="text/ng-template" id="createMenu.html">
+    <div class="modal-header">
+        <h4 class="modal-title fn-ms">发送流水</h4>
+    </div>
+    <div class="modal-body clearfix">
+        <div class="col-lg-12">
+            <form role="form" class="form-horizontal" id="createMenuForm">
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label">创建JSON：</label>
+                    <textarea name="JsonBody" ng-model="createMenuData.JsonBody" rows="30" class="form-control col-lg-10"></textarea>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary fn-ms" style="width:25%;" ng-click="createMenuCancel()">取消
+        </button>
+        <button type="button" class="btn btn-success fn-ms" style="width:25%;" ng-click="createMenuSend()">提交
+        </button>
+    </div>
+</script>
