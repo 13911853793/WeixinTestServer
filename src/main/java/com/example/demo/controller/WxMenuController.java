@@ -3,25 +3,14 @@ package com.example.demo.controller;
 import com.example.demo.config.WxMpProperties;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.bean.menu.WxMenu;
-import me.chanjar.weixin.common.bean.menu.WxMenuButton;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.menu.WxMpGetSelfMenuInfoResult;
 import me.chanjar.weixin.mp.bean.menu.WxMpMenu;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import static me.chanjar.weixin.common.api.WxConsts.MenuButtonType;
 
 /**
  * @author chendi
@@ -33,6 +22,7 @@ import static me.chanjar.weixin.common.api.WxConsts.MenuButtonType;
 public class WxMenuController {
     private final WxMpService wxService;
     private final WxMpProperties properties;
+    final WxMpProperties.MpConfig config = this.properties.getConfigs().get(0);
 
     /**
      * <pre>
@@ -45,7 +35,7 @@ public class WxMenuController {
     public Map<String, Object> menuCreate(@RequestBody String json) {
 
         Map<String, Object> datas = new HashMap<>(2);
-        final WxMpProperties.MpConfig config = this.properties.getConfigs().get(0);
+
         try {
             this.wxService.switchoverTo(config.getAppId()).getMenuService().menuCreate(json);
             datas.put("code", "000");
@@ -69,7 +59,6 @@ public class WxMenuController {
     @GetMapping("/delete")
     public Map<String, Object> menuDelete() {
         Map<String, Object> datas = new HashMap<>(2);
-        final WxMpProperties.MpConfig config = this.properties.getConfigs().get(0);
         try {
             this.wxService.switchoverTo(config.getAppId()).getMenuService().menuDelete();
             datas.put("code", "000");
@@ -95,14 +84,13 @@ public class WxMenuController {
     public Map<String, Object> menuGet() {
 
         Map<String, Object> datas = new HashMap<>(2);
-        final WxMpProperties.MpConfig config = this.properties.getConfigs().get(0);
         try {
             WxMpMenu wxMpMenu = this.wxService.switchoverTo(config.getAppId()).getMenuService().menuGet();
             datas.put("code", "000");
             datas.put("info", wxMpMenu);
 
         } catch (WxErrorException e) {
-            log.error("删除菜单错误-------" + e);
+            log.error("菜单查询失败-------" + e);
             e.printStackTrace();
             datas.put("code", "999");
             datas.put("info", "自定义菜单查询失败"+e.toString());
@@ -129,7 +117,6 @@ public class WxMenuController {
     @GetMapping("/getSelfMenuInfo")
     public Map<String, Object> getSelfMenuInfo() {
         Map<String, Object> datas = new HashMap<>(2);
-        final WxMpProperties.MpConfig config = this.properties.getConfigs().get(0);
 
         try {
             WxMpGetSelfMenuInfoResult wxMpGetSelfMenuInfoResult = this.wxService.switchoverTo(config.getAppId()).getMenuService().getSelfMenuInfo();
@@ -158,7 +145,6 @@ public class WxMenuController {
     @GetMapping("/delete/{menuId}")
     public Map<String, Object> menuDelete(@PathVariable String menuId) throws WxErrorException {
         Map<String, Object> datas = new HashMap<>(2);
-        final WxMpProperties.MpConfig config = this.properties.getConfigs().get(0);
         try {
             this.wxService.switchoverTo(config.getAppId()).getMenuService().menuDelete(menuId);
             datas.put("code", "000");
@@ -185,7 +171,6 @@ public class WxMenuController {
     @GetMapping("/menuTryMatch/{userid}")
     public Map<String, Object> menuTryMatch(@PathVariable String userid){
         Map<String, Object> datas = new HashMap<>(2);
-        final WxMpProperties.MpConfig config = this.properties.getConfigs().get(0);
         try {
             WxMenu wxMenu = this.wxService.switchoverTo(config.getAppId()).getMenuService().menuTryMatch(userid);
             datas.put("code", "000");
