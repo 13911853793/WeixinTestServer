@@ -51,11 +51,11 @@ public class WxMenuController {
             datas.put("code", "000");
             datas.put("info", "创建成功");
 
-        } catch (Exception e) {
+        } catch (WxErrorException e) {
             log.error("创建菜单错误-------" + e);
             e.printStackTrace();
             datas.put("code", "999");
-            datas.put("info", "创建失败");
+            datas.put("info", "创建失败"+e.toString());
         }
         return datas;
     }
@@ -75,29 +75,15 @@ public class WxMenuController {
             datas.put("code", "000");
             datas.put("info", "删除成功");
 
-        } catch (Exception e) {
+        } catch (WxErrorException e) {
             log.error("删除菜单错误-------" + e);
             e.printStackTrace();
             datas.put("code", "999");
-            datas.put("info", "删除失败");
+            datas.put("info", "删除失败"+e.toString());
         }
         return datas;
     }
 
-    /**
-     * <pre>
-     * 删除个性化菜单接口
-     * 详情请见: https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1455782296&token=&lang=zh_CN
-     * </pre>
-     *
-     * @param menuId 个性化菜单的menuid
-     */
-    @GetMapping("/delete/{menuId}")
-    public void menuDelete(@PathVariable String menuId) throws WxErrorException {
-        Map<String, Object> datas = new HashMap<>(2);
-        final WxMpProperties.MpConfig config = this.properties.getConfigs().get(0);
-        this.wxService.switchoverTo(config.getAppId()).getMenuService().menuDelete(menuId);
-    }
 
     /**
      * <pre>
@@ -106,25 +92,23 @@ public class WxMenuController {
      * </pre>
      */
     @GetMapping("/get")
-    public WxMpMenu menuGet() throws WxErrorException {
-        Map<String, Object> datas = new HashMap<>(2);
-        final WxMpProperties.MpConfig config = this.properties.getConfigs().get(0);
-        return this.wxService.switchoverTo(config.getAppId()).getMenuService().menuGet();
-    }
+    public Map<String, Object> menuGet() {
 
-    /**
-     * <pre>
-     * 测试个性化菜单匹配结果
-     * 详情请见: http://mp.weixin.qq.com/wiki/0/c48ccd12b69ae023159b4bfaa7c39c20.html
-     * </pre>
-     *
-     * @param userid 可以是粉丝的OpenID，也可以是粉丝的微信号。
-     */
-    @GetMapping("/menuTryMatch/{userid}")
-    public WxMenu menuTryMatch(@PathVariable String userid) throws WxErrorException {
         Map<String, Object> datas = new HashMap<>(2);
         final WxMpProperties.MpConfig config = this.properties.getConfigs().get(0);
-        return this.wxService.switchoverTo(config.getAppId()).getMenuService().menuTryMatch(userid);
+        try {
+            WxMpMenu wxMpMenu = this.wxService.switchoverTo(config.getAppId()).getMenuService().menuGet();
+            datas.put("code", "000");
+            datas.put("info", wxMpMenu);
+
+        } catch (WxErrorException e) {
+            log.error("删除菜单错误-------" + e);
+            e.printStackTrace();
+            datas.put("code", "999");
+            datas.put("info", "自定义菜单查询失败"+e.toString());
+        }
+        return datas;
+
     }
 
     /**
@@ -143,11 +127,86 @@ public class WxMenuController {
      * </pre>
      */
     @GetMapping("/getSelfMenuInfo")
-    public WxMpGetSelfMenuInfoResult getSelfMenuInfo() throws WxErrorException {
+    public Map<String, Object> getSelfMenuInfo() {
         Map<String, Object> datas = new HashMap<>(2);
         final WxMpProperties.MpConfig config = this.properties.getConfigs().get(0);
-        return this.wxService.switchoverTo(config.getAppId()).getMenuService().getSelfMenuInfo();
+
+        try {
+            WxMpGetSelfMenuInfoResult wxMpGetSelfMenuInfoResult = this.wxService.switchoverTo(config.getAppId()).getMenuService().getSelfMenuInfo();
+            datas.put("code", "000");
+            datas.put("info", wxMpGetSelfMenuInfoResult);
+
+        } catch (WxErrorException e) {
+            log.error("菜单配置查询失败-------" + e);
+            e.printStackTrace();
+            datas.put("code", "999");
+            datas.put("info", "菜单配置查询失败"+e.toString());
+        }
+        return datas;
+
     }
+
+
+    /**
+     * <pre>
+     * 删除个性化菜单接口
+     * 详情请见: https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1455782296&token=&lang=zh_CN
+     * </pre>
+     *
+     * @param menuId 个性化菜单的menuid
+     */
+    @GetMapping("/delete/{menuId}")
+    public Map<String, Object> menuDelete(@PathVariable String menuId) throws WxErrorException {
+        Map<String, Object> datas = new HashMap<>(2);
+        final WxMpProperties.MpConfig config = this.properties.getConfigs().get(0);
+        try {
+            this.wxService.switchoverTo(config.getAppId()).getMenuService().menuDelete(menuId);
+            datas.put("code", "000");
+            datas.put("info", "删除成功");
+
+        } catch (WxErrorException e) {
+            log.error("删除单个菜单失败-------" + e);
+            e.printStackTrace();
+            datas.put("code", "999");
+            datas.put("info", "删除单个菜单失败"+e.toString());
+        }
+        return datas;
+    }
+
+
+    /**
+     * <pre>
+     * 测试个性化菜单匹配结果
+     * 详情请见: http://mp.weixin.qq.com/wiki/0/c48ccd12b69ae023159b4bfaa7c39c20.html
+     * </pre>
+     *
+     * @param userid 可以是粉丝的OpenID，也可以是粉丝的微信号。
+     */
+    @GetMapping("/menuTryMatch/{userid}")
+    public Map<String, Object> menuTryMatch(@PathVariable String userid){
+        Map<String, Object> datas = new HashMap<>(2);
+        final WxMpProperties.MpConfig config = this.properties.getConfigs().get(0);
+        try {
+            WxMenu wxMenu = this.wxService.switchoverTo(config.getAppId()).getMenuService().menuTryMatch(userid);
+            datas.put("code", "000");
+            datas.put("info", wxMenu);
+
+        } catch (WxErrorException e) {
+            log.error("查询菜单匹配失败-------" + e);
+            e.printStackTrace();
+            datas.put("code", "999");
+            datas.put("info", "查询菜单匹配失败"+e.toString());
+        }
+        return datas;
+    }
+
+
+
+
+
+
+
+
 
 
     //    /**

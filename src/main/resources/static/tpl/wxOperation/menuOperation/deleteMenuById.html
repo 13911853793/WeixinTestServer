@@ -1,0 +1,19 @@
+<script type="text/ng-template" id="deleteMenuById.html">
+    <div class="modal-header">
+        <h4 class="modal-title fn-ms">删除单个菜单</h4>
+    </div>
+    <div class="modal-body clearfix">
+        <div class="col-lg-12">
+            <form role="form" class="form-horizontal" id="deleteMenuByIdForm">
+                <div class="form-group col-lg-12">
+                    <label class="col-lg-2 control-label">菜单ID：</label>
+                    <input name="menuId" ng-model="deleteMenuByIdData.menuId" class="form-control col-lg-10" placeholder="请输入菜单ID">
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary fn-ms" style="width:25%;" ng-click="deleteMenuByIdCancel()">取消</button>
+        <button type="button" class="btn btn-success fn-ms" style="width:25%;" ng-click="deleteMenuByIdSend()">提交</button>
+    </div>
+</script>

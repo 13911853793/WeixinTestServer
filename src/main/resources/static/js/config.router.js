@@ -35,11 +35,13 @@ angular.module('app')
                             },
                             'createMenu': {
                                 templateUrl: 'tpl/wxOperation/menuOperation/createMenu.html'
+                            },
+                            'deleteMenuById': {
+                                templateUrl: 'tpl/wxOperation/menuOperation/deleteMenuById.html'
+                            },
+                            'menuTryMatchById': {
+                                templateUrl: 'tpl/wxOperation/menuOperation/menuTryMatchById.html'
                             }
-
-                            // 'subscribeApply': {
-                            //     templateUrl: 'tpl/wxOperation/menuOperation/subscribeApply.html'
-                            // },
                             //
                             // 'searchPage': {
                             //     templateUrl: 'tpl/wxOperation/search.html'
@@ -48,9 +50,7 @@ angular.module('app')
                             //     templateUrl: 'tpl/wxOperation/viewPage.html'
                             // },
                             //
-                            // 'CCSubscribeApply': {
-                            //     templateUrl: 'tpl/wxOperation/menuOperation/CCSubscribeApply.html'
-                            // },
+
                             //
                             // 'subscribeChange': {
                             //     templateUrl: 'tpl/wxOperation/menuOperation/subscribeChange.html'
