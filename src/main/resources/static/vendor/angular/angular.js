@@ -19434,7 +19434,7 @@ function baseInputType(scope, element, attr, ctrl, $sniffer, $browser) {
       deferListener(event);
     });
 
-    // if user modifies input value using context menu in IE, we need "paste" and "cut" events to catch it
+    // if user modifies input value using context menuOperation in IE, we need "paste" and "cut" events to catch it
     if ($sniffer.hasEvent('paste')) {
       element.on('paste cut', deferListener);
     }

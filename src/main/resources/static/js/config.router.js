@@ -18,45 +18,46 @@ angular.module('app')
             function ($stateProvider, $urlRouterProvider) {
 
                 $urlRouterProvider
-                    .otherwise('/subscribe/operation');
+                    .otherwise('/menuOperation/operation');
 
                 $stateProvider
                     .state('subscribe', {
                         abstract: true,
-                        url: '/subscribe',
-                        templateUrl: 'tpl/simulation/subscribe/subscribe.html'
+                        url: '/menuOperation',
+                        templateUrl: 'tpl/wxOperation/menuOperation/index.html'
                     })
                     .state('subscribe.operation', {
                         url: '/operation',
                         views: {
-                            // 'searchPage': {
-                            //     templateUrl: 'tpl/simulation/search.html'
-                            // },
-                            // 'viewPage': {
-                            //     templateUrl: 'tpl/simulation/viewPage.html'
-                            // },
 
                             'menuPage': {
-                                templateUrl: 'tpl/simulation/subscribe/menu.html'
+                                templateUrl: 'tpl/wxOperation/menuOperation/menuOperation.html'
                             },
+                            'createMenu': {
+                                templateUrl: 'tpl/wxOperation/menuOperation/createMenu.html'
+                            }
+
                             // 'subscribeApply': {
-                            //     templateUrl: 'tpl/simulation/subscribe/subscribeApply.html'
+                            //     templateUrl: 'tpl/wxOperation/menuOperation/subscribeApply.html'
                             // },
                             //
-                            'createMenu': {
-                                templateUrl: 'tpl/simulation/subscribe/createMenu.html'
-                            }
+                            // 'searchPage': {
+                            //     templateUrl: 'tpl/wxOperation/search.html'
+                            // },
+                            // 'viewPage': {
+                            //     templateUrl: 'tpl/wxOperation/viewPage.html'
+                            // },
                             //
                             // 'CCSubscribeApply': {
-                            //     templateUrl: 'tpl/simulation/subscribe/CCSubscribeApply.html'
+                            //     templateUrl: 'tpl/wxOperation/menuOperation/CCSubscribeApply.html'
                             // },
                             //
                             // 'subscribeChange': {
-                            //     templateUrl: 'tpl/simulation/subscribe/subscribeChange.html'
+                            //     templateUrl: 'tpl/wxOperation/menuOperation/subscribeChange.html'
                             // },
                             //
                             // 'subscribeCancel': {
-                            //     templateUrl: 'tpl/simulation/subscribe/subscribeCancel.html'
+                            //     templateUrl: 'tpl/wxOperation/menuOperation/subscribeCancel.html'
                             // }
                         },
                         resolve: {
@@ -64,188 +65,188 @@ angular.module('app')
                                 function ($ocLazyLoad) {
                                     return $ocLazyLoad.load({
                                         files: [
-                                            'tpl/simulation/subscribe/subscribe.js', 'tpl/simulation/search.js'
+                                            'tpl/wxOperation/menuOperation/menuOperation.js', 'tpl/wxOperation/search.js'
                                         ]
                                     });
                                 }]
                         }
                     })
 
-                    .state('transfer', {
-                        abstract: true,
-                        url: '/transfer',
-                        templateUrl: 'tpl/simulation/transfer/transfer.html'
-                    })
-                    .state('transfer.operation', {
-                        url: '/operation',
-                        views: {
-                            'searchPage': {
-                                templateUrl: 'tpl/simulation/search.html'
-                            },
-                            'menuPage': {
-                                templateUrl: 'tpl/simulation/transfer/menu.html'
-                            },
-                            'viewPage': {
-                                templateUrl: 'tpl/simulation/viewPage.html'
-                            },
-                            'estimateApply': {
-                                templateUrl: 'tpl/simulation/transfer/estimateApply.html'
-                            },
-                            'estimateConfirmApply': {
-                                templateUrl: 'tpl/simulation/transfer/estimateConfirmApply.html'
-                            },
-                            'transferCancelApply': {
-                                templateUrl: 'tpl/simulation/transfer/transferCancelApply.html'
-                            },
-                            'transferApply': {
-                                templateUrl: 'tpl/simulation/transfer/transferApply.html'
-                            },
-                            'transferPayResult': {
-                                templateUrl: 'tpl/simulation/refund/notifyPayResult.html'
-                            }
-                        },
-                        resolve: {
-                            deps: ['$ocLazyLoad',
-                                function ($ocLazyLoad) {
-                                    return $ocLazyLoad.load({
-                                        files: [
-                                            'tpl/simulation/transfer/transfer.js', 'tpl/simulation/search.js'
-                                        ]
-                                    });
-                                }]
-                        }
-                    })
-
-                    .state('refund', {
-                        abstract: true,
-                        url: '/refund',
-                        templateUrl: 'tpl/simulation/refund/refund.html'
-                    })
-                    .state('refund.operation', {
-                        url: '/operation',
-                        views: {
-                            'searchPage': {
-                                templateUrl: 'tpl/simulation/search.html'
-                            },
-                            'viewPage': {
-                                templateUrl: 'tpl/simulation/viewPage.html'
-                            },
-                            'menuPage': {
-                                templateUrl: 'tpl/simulation/refund/menu.html'
-                            },
-                            'refundApply': {
-                                templateUrl: 'tpl/simulation/refund/refundApply.html'
-                            },
-
-                            'flowRefundApply': {
-                                templateUrl: 'tpl/simulation/refund/flowRefundApply.html'
-                            },
-
-                            'notifyPayResult': {
-                                templateUrl: 'tpl/simulation/refund/notifyPayResult.html'
-                            }
-                        },
-                        resolve: {
-                            deps: ['$ocLazyLoad',
-                                function ($ocLazyLoad) {
-                                    return $ocLazyLoad.load({
-                                        files: [
-                                            'tpl/simulation/refund/refund.js', 'tpl/simulation/search.js'
-                                        ]
-                                    });
-                                }]
-                        }
-                    })
-
-
-                    .state('redeem', {
-                        abstract: true,
-                        url: '/redeem',
-                        templateUrl: 'tpl/simulation/redeem/redeem.html'
-                    })
-                    .state('redeem.operation', {
-                        url: '/operation',
-                        views: {
-                            'searchPage': {
-                                templateUrl: 'tpl/simulation/search.html'
-                            },
-                            'viewPage': {
-                                templateUrl: 'tpl/simulation/viewPage.html'
-                            },
-                            'menuPage': {
-                                templateUrl: 'tpl/simulation/redeem/menu.html'
-                            },
-                            'redeemApply': {
-                                templateUrl: 'tpl/simulation/redeem/redeemApply.html'
-                            },
-
-                            'redeemCancelApply': {
-                                templateUrl: 'tpl/simulation/redeem/redeemCancelApply.html'
-                            },
-
-                            'notifyRedeemPayResult': {
-                                templateUrl: 'tpl/simulation/redeem/notifyRedeemPayResult.html'
-                            }
-                        },
-                        resolve: {
-                            deps: ['$ocLazyLoad',
-                                function ($ocLazyLoad) {
-                                    return $ocLazyLoad.load({
-                                        files: [
-                                            'tpl/simulation/redeem/redeem.js', 'tpl/simulation/search.js'
-                                        ]
-                                    });
-                                }]
-                        }
-                    })
-
-
-                    .state('other', {
-                        abstract: true,
-                        url: '/other',
-                        templateUrl: 'tpl/simulation/other/other.html'
-                    })
-                    .state('other.operation', {
-                        url: '/operation',
-                        views: {
-                            'searchPage': {
-                                templateUrl: 'tpl/simulation/search.html'
-                            },
-                            'viewPage': {
-                                templateUrl: 'tpl/simulation/viewPage.html'
-                            },
-                            'menuPage': {
-                                templateUrl: 'tpl/simulation/other/menu.html'
-                            },
-                            'antoMath': {
-                                templateUrl: 'tpl/simulation/other/antoMath.html'
-                            },
-
-                            'enjoyBath': {
-                                templateUrl: 'tpl/simulation/other/enjoyBath.html'
-                            },
-
-                            'noNeedMatch': {
-                                templateUrl: 'tpl/simulation/other/noNeedMatch.html'
-                            },
-                            'sendSIA': {
-                                templateUrl: 'tpl/simulation/other/sendSIA.html'
-                            },
-                            'taUnlock': {
-                                templateUrl: 'tpl/simulation/other/taUnlock.html'
-                            }
-                        },
-                        resolve: {
-                            deps: ['$ocLazyLoad',
-                                function ($ocLazyLoad) {
-                                    return $ocLazyLoad.load({
-                                        files: [
-                                            'tpl/simulation/other/other.js', 'tpl/simulation/search.js'
-                                        ]
-                                    });
-                                }]
-                        }
-                    })
+                    // .state('transfer', {
+                    //     abstract: true,
+                    //     url: '/transfer',
+                    //     templateUrl: 'tpl/wxOperation/transfer/transfer.html'
+                    // })
+                    // .state('transfer.operation', {
+                    //     url: '/operation',
+                    //     views: {
+                    //         'searchPage': {
+                    //             templateUrl: 'tpl/wxOperation/search.html'
+                    //         },
+                    //         'menuPage': {
+                    //             templateUrl: 'tpl/wxOperation/transfer/menuOperation.html'
+                    //         },
+                    //         'viewPage': {
+                    //             templateUrl: 'tpl/wxOperation/viewPage.html'
+                    //         },
+                    //         'estimateApply': {
+                    //             templateUrl: 'tpl/wxOperation/transfer/estimateApply.html'
+                    //         },
+                    //         'estimateConfirmApply': {
+                    //             templateUrl: 'tpl/wxOperation/transfer/estimateConfirmApply.html'
+                    //         },
+                    //         'transferCancelApply': {
+                    //             templateUrl: 'tpl/wxOperation/transfer/transferCancelApply.html'
+                    //         },
+                    //         'transferApply': {
+                    //             templateUrl: 'tpl/wxOperation/transfer/transferApply.html'
+                    //         },
+                    //         'transferPayResult': {
+                    //             templateUrl: 'tpl/wxOperation/refund/notifyPayResult.html'
+                    //         }
+                    //     },
+                    //     resolve: {
+                    //         deps: ['$ocLazyLoad',
+                    //             function ($ocLazyLoad) {
+                    //                 return $ocLazyLoad.load({
+                    //                     files: [
+                    //                         'tpl/wxOperation/transfer/transfer.js', 'tpl/wxOperation/search.js'
+                    //                     ]
+                    //                 });
+                    //             }]
+                    //     }
+                    // })
+                    //
+                    // .state('refund', {
+                    //     abstract: true,
+                    //     url: '/refund',
+                    //     templateUrl: 'tpl/wxOperation/refund/refund.html'
+                    // })
+                    // .state('refund.operation', {
+                    //     url: '/operation',
+                    //     views: {
+                    //         'searchPage': {
+                    //             templateUrl: 'tpl/wxOperation/search.html'
+                    //         },
+                    //         'viewPage': {
+                    //             templateUrl: 'tpl/wxOperation/viewPage.html'
+                    //         },
+                    //         'menuPage': {
+                    //             templateUrl: 'tpl/wxOperation/refund/menuOperation.html'
+                    //         },
+                    //         'refundApply': {
+                    //             templateUrl: 'tpl/wxOperation/refund/refundApply.html'
+                    //         },
+                    //
+                    //         'flowRefundApply': {
+                    //             templateUrl: 'tpl/wxOperation/refund/flowRefundApply.html'
+                    //         },
+                    //
+                    //         'notifyPayResult': {
+                    //             templateUrl: 'tpl/wxOperation/refund/notifyPayResult.html'
+                    //         }
+                    //     },
+                    //     resolve: {
+                    //         deps: ['$ocLazyLoad',
+                    //             function ($ocLazyLoad) {
+                    //                 return $ocLazyLoad.load({
+                    //                     files: [
+                    //                         'tpl/wxOperation/refund/refund.js', 'tpl/wxOperation/search.js'
+                    //                     ]
+                    //                 });
+                    //             }]
+                    //     }
+                    // })
+                    //
+                    //
+                    // .state('redeem', {
+                    //     abstract: true,
+                    //     url: '/redeem',
+                    //     templateUrl: 'tpl/wxOperation/redeem/redeem.html'
+                    // })
+                    // .state('redeem.operation', {
+                    //     url: '/operation',
+                    //     views: {
+                    //         'searchPage': {
+                    //             templateUrl: 'tpl/wxOperation/search.html'
+                    //         },
+                    //         'viewPage': {
+                    //             templateUrl: 'tpl/wxOperation/viewPage.html'
+                    //         },
+                    //         'menuPage': {
+                    //             templateUrl: 'tpl/wxOperation/redeem/menuOperation.html'
+                    //         },
+                    //         'redeemApply': {
+                    //             templateUrl: 'tpl/wxOperation/redeem/redeemApply.html'
+                    //         },
+                    //
+                    //         'redeemCancelApply': {
+                    //             templateUrl: 'tpl/wxOperation/redeem/redeemCancelApply.html'
+                    //         },
+                    //
+                    //         'notifyRedeemPayResult': {
+                    //             templateUrl: 'tpl/wxOperation/redeem/notifyRedeemPayResult.html'
+                    //         }
+                    //     },
+                    //     resolve: {
+                    //         deps: ['$ocLazyLoad',
+                    //             function ($ocLazyLoad) {
+                    //                 return $ocLazyLoad.load({
+                    //                     files: [
+                    //                         'tpl/wxOperation/redeem/redeem.js', 'tpl/wxOperation/search.js'
+                    //                     ]
+                    //                 });
+                    //             }]
+                    //     }
+                    // })
+                    //
+                    //
+                    // .state('other', {
+                    //     abstract: true,
+                    //     url: '/other',
+                    //     templateUrl: 'tpl/wxOperation/other/other.html'
+                    // })
+                    // .state('other.operation', {
+                    //     url: '/operation',
+                    //     views: {
+                    //         'searchPage': {
+                    //             templateUrl: 'tpl/wxOperation/search.html'
+                    //         },
+                    //         'viewPage': {
+                    //             templateUrl: 'tpl/wxOperation/viewPage.html'
+                    //         },
+                    //         'menuPage': {
+                    //             templateUrl: 'tpl/wxOperation/other/menuOperation.html'
+                    //         },
+                    //         'antoMath': {
+                    //             templateUrl: 'tpl/wxOperation/other/antoMath.html'
+                    //         },
+                    //
+                    //         'enjoyBath': {
+                    //             templateUrl: 'tpl/wxOperation/other/enjoyBath.html'
+                    //         },
+                    //
+                    //         'noNeedMatch': {
+                    //             templateUrl: 'tpl/wxOperation/other/noNeedMatch.html'
+                    //         },
+                    //         'sendSIA': {
+                    //             templateUrl: 'tpl/wxOperation/other/sendSIA.html'
+                    //         },
+                    //         'taUnlock': {
+                    //             templateUrl: 'tpl/wxOperation/other/taUnlock.html'
+                    //         }
+                    //     },
+                    //     resolve: {
+                    //         deps: ['$ocLazyLoad',
+                    //             function ($ocLazyLoad) {
+                    //                 return $ocLazyLoad.load({
+                    //                     files: [
+                    //                         'tpl/wxOperation/other/other.js', 'tpl/wxOperation/search.js'
+                    //                     ]
+                    //                 });
+                    //             }]
+                    //     }
+                    // })
 
 
             }

@@ -4045,8 +4045,8 @@ function $StateRefDirective($state, $timeout) {
  * A directive working alongside ui-sref to add classes to an element when the
  * related ui-sref directive's state is active, and removing them when it is inactive.
  * The primary use-case is to simplify the special appearance of navigation menus
- * relying on `ui-sref`, by having the "active" state's menu button appear different,
- * distinguishing it from the inactive menu items.
+ * relying on `ui-sref`, by having the "active" state's menuOperation button appear different,
+ * distinguishing it from the inactive menuOperation items.
  *
  * ui-sref-active can live on the same element as ui-sref or on a parent element. The first
  * ui-sref-active found at the same level or above the ui-sref will be used.

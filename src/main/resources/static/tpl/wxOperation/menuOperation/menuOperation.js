@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-app.controller('subscribeController', ['$scope', '$modal', '$http', function ($scope, $modal, $http) {
+app.controller('menuOperationController', ['$scope', '$modal', '$http', function ($scope, $modal, $http) {
     $scope.createMenuData = {};
 
     $scope.createMenu = function (e) {
@@ -30,7 +30,7 @@ app.controller('subscribeController', ['$scope', '$modal', '$http', function ($s
 
             $http({
                 method: "POST",
-                url: "wx/menu/createByJson",
+                url: "wx/menuOperation/createByJson",
                 headers: {
                     'Content-type':'application/json;charset=UTF-8'
                 },
@@ -49,4 +49,27 @@ app.controller('subscribeController', ['$scope', '$modal', '$http', function ($s
             $modalInstance.close();
         };
     };
+
+
+    $scope.deleteMenuSend = function () {
+        $http({
+            method: "GET",
+            url: "wx/menuOperation/delete",
+            headers: {
+                'Content-type':'application/json;charset=UTF-8'
+            }})
+            .success(function (data)
+            {
+                alert(data.info);
+                location.reload();
+            })
+            .error(function (data)
+            {
+                alert(data.info);
+            });
+    };
+
+
+
+
 }]);

@@ -33,17 +33,19 @@ import static me.chanjar.weixin.common.api.WxConsts.MenuButtonType;
 public class WxMenuController {
     private final WxMpService wxService;
     private final WxMpProperties properties;
+
     /**
      * <pre>
      * 自定义菜单创建接口
      * </pre>
+     *
      * @return 如果是个性化菜单，则返回menuid，否则返回null
      */
     @PostMapping("/createByJson")
-    public Map<String, Object> menuCreate(@RequestBody String json){
+    public Map<String, Object> menuCreate(@RequestBody String json) {
 
         Map<String, Object> datas = new HashMap<>(2);
-        final  WxMpProperties.MpConfig  config= this.properties.getConfigs().get(0);
+        final WxMpProperties.MpConfig config = this.properties.getConfigs().get(0);
         try {
             this.wxService.switchoverTo(config.getAppId()).getMenuService().menuCreate(json);
             datas.put("code", "000");
@@ -65,10 +67,21 @@ public class WxMenuController {
      * </pre>
      */
     @GetMapping("/delete")
-    public void menuDelete() throws WxErrorException {
+    public Map<String, Object> menuDelete() {
         Map<String, Object> datas = new HashMap<>(2);
-        final  WxMpProperties.MpConfig  config= this.properties.getConfigs().get(0);
-        this.wxService.switchoverTo(config.getAppId()).getMenuService().menuDelete();
+        final WxMpProperties.MpConfig config = this.properties.getConfigs().get(0);
+        try {
+            this.wxService.switchoverTo(config.getAppId()).getMenuService().menuDelete();
+            datas.put("code", "000");
+            datas.put("info", "删除成功");
+
+        } catch (Exception e) {
+            log.error("删除菜单错误-------" + e);
+            e.printStackTrace();
+            datas.put("code", "999");
+            datas.put("info", "删除失败");
+        }
+        return datas;
     }
 
     /**
@@ -82,7 +95,7 @@ public class WxMenuController {
     @GetMapping("/delete/{menuId}")
     public void menuDelete(@PathVariable String menuId) throws WxErrorException {
         Map<String, Object> datas = new HashMap<>(2);
-        final  WxMpProperties.MpConfig  config= this.properties.getConfigs().get(0);
+        final WxMpProperties.MpConfig config = this.properties.getConfigs().get(0);
         this.wxService.switchoverTo(config.getAppId()).getMenuService().menuDelete(menuId);
     }
 
@@ -95,7 +108,7 @@ public class WxMenuController {
     @GetMapping("/get")
     public WxMpMenu menuGet() throws WxErrorException {
         Map<String, Object> datas = new HashMap<>(2);
-        final  WxMpProperties.MpConfig  config= this.properties.getConfigs().get(0);
+        final WxMpProperties.MpConfig config = this.properties.getConfigs().get(0);
         return this.wxService.switchoverTo(config.getAppId()).getMenuService().menuGet();
     }
 
@@ -110,7 +123,7 @@ public class WxMenuController {
     @GetMapping("/menuTryMatch/{userid}")
     public WxMenu menuTryMatch(@PathVariable String userid) throws WxErrorException {
         Map<String, Object> datas = new HashMap<>(2);
-        final  WxMpProperties.MpConfig  config= this.properties.getConfigs().get(0);
+        final WxMpProperties.MpConfig config = this.properties.getConfigs().get(0);
         return this.wxService.switchoverTo(config.getAppId()).getMenuService().menuTryMatch(userid);
     }
 
@@ -132,7 +145,7 @@ public class WxMenuController {
     @GetMapping("/getSelfMenuInfo")
     public WxMpGetSelfMenuInfoResult getSelfMenuInfo() throws WxErrorException {
         Map<String, Object> datas = new HashMap<>(2);
-        final  WxMpProperties.MpConfig  config= this.properties.getConfigs().get(0);
+        final WxMpProperties.MpConfig config = this.properties.getConfigs().get(0);
         return this.wxService.switchoverTo(config.getAppId()).getMenuService().getSelfMenuInfo();
     }
 
@@ -148,13 +161,13 @@ public class WxMenuController {
 //     * @return 如果是个性化菜单，则返回menuid，否则返回null
 //     */
 //    @PostMapping("/create")
-//    public String menuCreate(@PathVariable String appid, @RequestBody WxMenu menu) throws WxErrorException {
-//        return this.wxService.switchoverTo(appid).getMenuService().menuCreate(menu);
+//    public String menuCreate(@PathVariable String appid, @RequestBody WxMenu menuOperation) throws WxErrorException {
+//        return this.wxService.switchoverTo(appid).getMenuService().menuCreate(menuOperation);
 //    }
 //
 //    @GetMapping("/create")
 //    public String menuCreateSample(@PathVariable String appid) throws WxErrorException, MalformedURLException {
-//        WxMenu menu = new WxMenu();
+//        WxMenu menuOperation = new WxMenu();
 //        WxMenuButton button1 = new WxMenuButton();
 //        button1.setType(MenuButtonType.CLICK);
 //        button1.setName("今日歌曲");
@@ -170,9 +183,9 @@ public class WxMenuController {
 //        WxMenuButton button3 = new WxMenuButton();
 //        button3.setName("菜单");
 //
-//        menu.getButtons().add(button1);
-////        menu.getButtons().add(button2);
-//        menu.getButtons().add(button3);
+//        menuOperation.getButtons().add(button1);
+////        menuOperation.getButtons().add(button2);
+//        menuOperation.getButtons().add(button3);
 //
 //        WxMenuButton button31 = new WxMenuButton();
 //        button31.setType(MenuButtonType.VIEW);
@@ -210,6 +223,6 @@ public class WxMenuController {
 //        button3.getSubButtons().add(button34);
 //
 //        this.wxService.switchover(appid);
-//        return this.wxService.getMenuService().menuCreate(menu);
+//        return this.wxService.getMenuService().menuCreate(menuOperation);
 //    }
 }
